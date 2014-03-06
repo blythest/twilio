@@ -55,6 +55,19 @@ def hello():
     response.say('Good luck on your Twilio quest!', voice='woman')
     return Response(str(response), mimetype='text/xml')
 
+@app.route('/incoming/sms', methods=["POST"])
+def incoming_message():
+    response = twiml.Response()
+    response.sms('I just responded to a text message. Huzzah!')
+    return Response(str(response), mimetype='text/xml')
+
+@app.route('/incoming/call', methods=["POST"])
+def incoming_call():
+    response = twiml.Response()
+    response.say('hello!')
+    response.gather(action="/incoming/call", method=["GET"])
+    return Response(str(response), mimetype='text/xml')
+
 if __name__ == '__main__':
     # Note that in production, you would want to disable debugging
     app.run(debug=True)
